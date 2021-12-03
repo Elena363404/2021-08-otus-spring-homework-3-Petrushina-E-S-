@@ -1,0 +1,11 @@
+features:
+  quiz-path: fileQuiz.csv
+  cnt-answer-to-pass-test: 4
+spring:
+  messages:
+    basename: i18n/messages
+  spring:
+    output:
+      ansi:
+        enabled: ALWAYS
+
