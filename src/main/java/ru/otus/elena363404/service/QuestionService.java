@@ -8,49 +8,57 @@ import ru.otus.elena363404.domain.Option;
 import ru.otus.elena363404.domain.Question;
 import ru.otus.elena363404.exception.QuestionReadingException;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
 
   private final int cntAnswerForPassTest;
+  private final int cntQuestion;
   private final QuestionDao dao;
   private final IOService ioService;
   private final MessageSource messageSource;
+  private final HashMap<Integer, String> availableLang;
+  private final HashMap<String, String> allQuizPath;
 
-  public QuestionService(AppConfig config) {
-    this.dao = config.getDao();
+  public QuestionService(AppConfig config, QuestionDao dao, MessageSource messageSource, IOStreamService ioService) {
     this.cntAnswerForPassTest = config.getCntAnswerToPassTest();
-    this.ioService = config.getIOStreamService();
-    this.messageSource = config.getMessageSource();
+    this.cntQuestion = config.getCntQuestion();
+    this.availableLang = config.getAvailableLang();
+    this.allQuizPath = config.getAllQuizPath();
+    this.ioService = ioService;
+    this.dao = dao;
+    this.messageSource = messageSource;
   }
 
 
   public void testStudent() throws QuestionReadingException {
 
     String lang = getLang();
+    String nameQuizPath = allQuizPath.get(lang.toLowerCase());
+    lang = (lang.toLowerCase() + "-" + lang.toUpperCase());
     Locale langLocale = Locale.forLanguageTag(lang);
-    int questionListSize = getQuestionList().size();
-    int cntTestRightAnswer = getCntRightAnswer(langLocale);
-    String resultTest = getResultTest(cntTestRightAnswer, questionListSize);
+    int cntTestRightAnswer = getCntRightAnswer(langLocale, nameQuizPath);
+    String resultTest = getResultTest(cntTestRightAnswer);
 
     printResultTest(cntTestRightAnswer, resultTest, langLocale);
 
   }
 
-  private int getCntRightAnswer(Locale langLocale) throws QuestionReadingException {
-    List<Question> questionList = getQuestionList();
+  private int getCntRightAnswer(Locale langLocale, String nameQuizPath) throws QuestionReadingException {
+    List<Question> questionList = getQuestionList(nameQuizPath);
     int cntRightAnswer = 0;
 
     for (int i = 0; i < questionList.size(); i++) {
-      String question = "strings.question." + (i+1);
+      String question = questionList.get(i).getQuestion();
       int answer = questionList.get(i).getAnswer().getAnswer();
       List<Option> optionList = questionList.get(i).getOptions();
 
       String options = getOptions(optionList);
 
-      ioService.out(getLocalMessage(question, langLocale));
+      ioService.out("\n" + question);
       ioService.out(options);
       ioService.out(getLocalMessage("strings.reply.to.input", langLocale));
 
@@ -63,8 +71,8 @@ public class QuestionService {
     return cntRightAnswer;
   }
 
-  private List<Question> getQuestionList() throws QuestionReadingException {
-    List<Question> questionList = dao.getAllQuestions();
+  private List<Question> getQuestionList(String quizPath) throws QuestionReadingException {
+    List<Question> questionList = dao.getAllQuestions(quizPath);
     return questionList;
   }
 
@@ -78,17 +86,23 @@ public class QuestionService {
   }
 
   private String getLang() {
-    String lang;
-    int inNumLang = 0;
+    String lang = null;
+    int inNumLang;
+    String allLang = convertHashmapToStr(availableLang);
 
-    ioService.out("Choose language: \n1.English \n2.Russian");
+    ioService.out("Choose language: \n" + allLang);
     ioService.out("Input num of answer: ");
     String input = ioService.readString();
 
     if (input.matches("\\d+")) {
       inNumLang = Integer.parseInt(input);
+      if (inNumLang <= availableLang.size() && inNumLang > 0) {
+        lang = availableLang.get(inNumLang);
+        lang = (lang != null && lang.length() > 1) ? lang.substring(0, 2) : lang;
+      }
     }
-    lang = inNumLang == 1 ? "en-EN" : (inNumLang == 2 ? "ru-RU" : "ERR");
+
+    lang = lang == null ? "ERR" : lang;
 
     while (lang.equals("ERR")) {
       ioService.out("You have selected the wrong language!");
@@ -103,8 +117,8 @@ public class QuestionService {
     return txtMsg;
   }
 
-  private String getResultTest(int cntTestRightAnswer, int questionListSize) {
-    String resultTest = cntTestRightAnswer + "/" + questionListSize;
+  private String getResultTest(int cntTestRightAnswer) {
+    String resultTest = cntTestRightAnswer + "/" + cntQuestion;
     return resultTest;
   }
 
@@ -115,6 +129,15 @@ public class QuestionService {
     } else {
       ioService.out(getLocalMessage("strings.reply.fail.test",langLocale) + resultTest);
     }
+  }
+
+  private String convertHashmapToStr(Map hm) {
+    AtomicInteger cnt = new AtomicInteger(1);
+    String mapAsStr = (String) hm.keySet().stream()
+      .map(key -> cnt.getAndIncrement() + "." + hm.get(key))
+      .collect(Collectors.joining("\n"));
+
+    return mapAsStr;
   }
 
 }

@@ -1,45 +1,36 @@
 package ru.otus.elena363404.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
-import ru.otus.elena363404.dao.QuestionDaoCsv;
-import ru.otus.elena363404.service.IOService;
+import java.util.HashMap;
 
 @ConfigurationProperties(prefix = "features")
-@RequiredArgsConstructor
 @Component
 public class AppConfig {
 
-  private String quizPath;
-
+  private HashMap<String, String> allQuizPath;
   private int cntAnswerToPassTest;
+  private int cntQuestion;
 
-  private QuestionDaoCsv dao;
+  private HashMap<Integer, String> availableLang;
 
-  private final IOService ioService;
-
-  private final MessageSource messageSource;
-
-  public QuestionDaoCsv getDao() {
-
-    if (dao == null) {
-      dao = new QuestionDaoCsv(quizPath);
-    }
-    return dao;
+  public HashMap<Integer, String> getAvailableLang() {
+    return availableLang;
   }
 
-  public String getQuizPath() {
-    return quizPath;
+  public void setAvailableLang(HashMap<Integer, String> availableLang) {
+    this.availableLang = availableLang;
   }
 
-  public void setQuizPath(String quizPath) {
-    this.quizPath = quizPath;
+  public HashMap<String, String> getAllQuizPath() {
+    return allQuizPath;
+  }
+
+  public void setAllQuizPath(HashMap<String, String> quizPath) {
+    this.allQuizPath = quizPath;
   }
 
   public int getCntAnswerToPassTest() {
-
     return cntAnswerToPassTest;
   }
 
@@ -47,13 +38,11 @@ public class AppConfig {
     this.cntAnswerToPassTest = cntAnswerToPassTest;
   }
 
-  public IOService getIOStreamService() {
-    return ioService;
+  public int getCntQuestion() {
+    return cntQuestion;
   }
 
-  public MessageSource getMessageSource() {
-    return messageSource;
+  public void setCntQuestion(int cntQuestion) {
+    this.cntQuestion = cntQuestion;
   }
-
-
 }

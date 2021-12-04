@@ -9,8 +9,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import ru.otus.elena363404.Quiz;
 import ru.otus.elena363404.config.AppConfig;
+import ru.otus.elena363404.dao.QuestionDao;
 import ru.otus.elena363404.domain.Question;
 import ru.otus.elena363404.exception.QuestionReadingException;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,28 +32,29 @@ class QuestionServiceTest {
   @Autowired
   private MessageSource msg;
 
-  @Test
-  void getQuestionList() throws QuestionReadingException {
-    assertEquals(5, config.getDao().getAllQuestions().size());
-  }
-
-  @Test
-  void getCntRightAnswer() {
-
-  }
+  @Autowired
+  private QuestionDao dao;
 
   @Test
   void getMessageRU() {
-    Locale langLocale = new Locale("RU-ru");
-    String tstQuestion = msg.getMessage("strings.question.1", null, langLocale);
-    assertEquals(tstQuestion, "Что из этого не имеет структуру на основе индекса?");
+    Locale langLocale = new Locale("ru_RU");
+    String tstQuestion = msg.getMessage("strings.reply.to.input", null, langLocale);
+    assertEquals(tstQuestion, "Введите номер ответа: ");
+  }
+
+  @Test
+  void getMessageEN() {
+    Locale langLocale = new Locale("en_EN");
+    String tstQuestion = msg.getMessage("strings.reply.to.input", null, langLocale);
+    assertEquals(tstQuestion, "Input num of answer: ");
   }
 
   @Test
   void testStudentFailTest() throws QuestionReadingException {
     int cntRightAnswer = 0;
     int[] arrAnswer = new int[] {1, 2, 1, 3, 1};
-    List<Question> questionList = config.getDao().getAllQuestions();
+    HashMap <String, String> allQuizPath = config.getAllQuizPath();
+    List<Question> questionList = dao.getAllQuestions(allQuizPath.get("en"));
     for (int i = 0; i < questionList.size(); i++) {
       int answer = questionList.get(i).getAnswer().getAnswer();
       if (answer == arrAnswer[i]) {
@@ -64,7 +68,8 @@ class QuestionServiceTest {
   void testStudentPassTest() throws QuestionReadingException {
     int cntRightAnswer = 0;
     int[] arrAnswer = new int[] {3, 2, 2, 2, 3};
-    List<Question> questionList = config.getDao().getAllQuestions();
+    HashMap <String, String> allQuizPath = config.getAllQuizPath();
+    List<Question> questionList = dao.getAllQuestions(allQuizPath.get("ru"));
     for (int i = 0; i < questionList.size(); i++) {
       int answer = questionList.get(i).getAnswer().getAnswer();
       if (answer == arrAnswer[i]) {

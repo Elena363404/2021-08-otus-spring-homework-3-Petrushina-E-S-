@@ -1,6 +1,12 @@
 features:
-  quiz-path: fileQuiz.csv
+  all-quiz-path:
+    en: fileQuizEn.csv
+    ru: fileQuizRu.csv
   cnt-answer-to-pass-test: 4
+  cnt-question: 5
+  available-lang:
+    1: English
+    2: Russian
 spring:
   messages:
     basename: i18n/messages

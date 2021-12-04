@@ -1,4 +1,5 @@
 package ru.otus.elena363404.dao;
+import org.springframework.stereotype.Repository;
 import ru.otus.elena363404.domain.Answer;
 import ru.otus.elena363404.domain.Option;
 import ru.otus.elena363404.domain.Question;
@@ -10,15 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+@Repository
 public class QuestionDaoCsv implements QuestionDao {
 
-  private final String quizPath;
-
-  public QuestionDaoCsv(String quizPath) {
-    this.quizPath = quizPath;
-  }
-
-  public List<Question> getAllQuestions() throws QuestionReadingException {
+  public List<Question> getAllQuestions(String quizPath) throws QuestionReadingException {
 
     List<Question> listQuestion = new ArrayList<>();
 
@@ -30,6 +26,7 @@ public class QuestionDaoCsv implements QuestionDao {
       while (scanner.hasNext()) {
         int num = scanner.nextInt();
         String question = scanner.next();
+        question = question != null ? question.replace("#COMMA", ","): question;
         List<String> options = Arrays.asList(scanner.next().split("/"));
         List<Option> listOptions = new ArrayList<>();
         int idOption = 0;
