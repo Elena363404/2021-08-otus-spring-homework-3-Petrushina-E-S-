@@ -1,0 +1,6 @@
+Num,Question,Options,Answers
+1,Which of those doesn't have an index based structure?,List/Set/Map,3
+2,java.util.Collections is a:,Class/Interface/Object/None of the above,2
+3,Methods such as reverse and shuffle are offered in:,Object/Collection/Collections/Apache Commons Collections,2
+4,Which of those allows duplicate elements?,Set/List/All/None of the above,2
+5,Which allows the storage of a null key and null values?,Hashtable/HashMap/None of the above,3
