@@ -1,5 +1,6 @@
 package ru.otus.elena363404.dao;
 import org.springframework.stereotype.Repository;
+import ru.otus.elena363404.config.LangConfig;
 import ru.otus.elena363404.domain.Answer;
 import ru.otus.elena363404.domain.Option;
 import ru.otus.elena363404.domain.Question;
@@ -14,11 +15,17 @@ import java.util.Scanner;
 @Repository
 public class QuestionDaoCsv implements QuestionDao {
 
-  public List<Question> getAllQuestions(String quizPath) throws QuestionReadingException {
+  private final LangConfig config;
+
+  public QuestionDaoCsv(LangConfig config) {
+    this.config = config;
+  }
+
+  public List<Question> getAllQuestions() throws QuestionReadingException {
 
     List<Question> listQuestion = new ArrayList<>();
 
-    try (InputStream is = getClass().getClassLoader().getResourceAsStream(quizPath)) {
+    try (InputStream is = getClass().getClassLoader().getResourceAsStream(config.getLocalFileName())) {
 
       Scanner scanner = new Scanner(is);
       scanner.useDelimiter(",|\\n");

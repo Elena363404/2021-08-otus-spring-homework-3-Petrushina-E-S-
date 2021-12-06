@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface QuestionDao {
 
-  List<Question> getAllQuestions(String quizPath) throws QuestionReadingException;
+  List<Question> getAllQuestions() throws QuestionReadingException;
 }

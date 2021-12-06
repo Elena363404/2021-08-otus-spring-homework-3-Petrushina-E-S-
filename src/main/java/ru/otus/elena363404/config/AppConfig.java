@@ -1,32 +1,26 @@
 package ru.otus.elena363404.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 
 @ConfigurationProperties(prefix = "features")
 @Component
+@Primary
 public class AppConfig {
 
-  private HashMap<String, String> allQuizPath;
+  private HashMap<Integer, String> allQuizPath;
   private int cntAnswerToPassTest;
   private int cntQuestion;
 
-  private HashMap<Integer, String> availableLang;
 
-  public HashMap<Integer, String> getAvailableLang() {
-    return availableLang;
-  }
-
-  public void setAvailableLang(HashMap<Integer, String> availableLang) {
-    this.availableLang = availableLang;
-  }
-
-  public HashMap<String, String> getAllQuizPath() {
+  public HashMap<Integer, String> getAllQuizPath() {
     return allQuizPath;
   }
 
-  public void setAllQuizPath(HashMap<String, String> quizPath) {
+  public void setAllQuizPath(HashMap<Integer, String> quizPath) {
     this.allQuizPath = quizPath;
   }
 
