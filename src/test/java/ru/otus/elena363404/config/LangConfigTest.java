@@ -4,9 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.MessageSource;
+import ru.otus.elena363404.service.MessageService;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +18,7 @@ class LangConfigTest {
   private LangConfig config;
 
   @Autowired
-  private MessageSource messageSource;
+  private MessageService messageService;
 
   @Test
   void getAllLangStr() {
@@ -40,14 +40,14 @@ class LangConfigTest {
   @Test
   void getLocalMessage() {
     config.setLangNum(2);
-    assertEquals(config.getLocalMessage("strings.reply.to.input"), "Введите номер ответа: ");
+    assertEquals(messageService.getLocalMessage("strings.reply.to.input"), "Введите номер ответа: ");
     config.setLangNum(1);
-    assertEquals(config.getLocalMessage("strings.reply.to.input"), "Input num of answer: ");
+    assertEquals(messageService.getLocalMessage("strings.reply.to.input"), "Input num of answer: ");
   }
 
   @Test
   void getAvailableLang() {
-    HashMap<Integer, String> hm = config.getAvailableLang();
+    Map<Integer, String> hm = config.getAvailableLang();
 
     assertEquals(hm.get(1), "English");
     assertEquals(hm.get(2), "Russian");
@@ -63,7 +63,7 @@ class LangConfigTest {
 
   @Test
   void getAllLocale() {
-    HashMap<Integer, String> hm = config.getAllLocale();
+    Map<Integer, String> hm = config.getAllLocale();
 
     assertEquals(hm.get(1), "en-EN");
     assertEquals(hm.get(2), "ru-RU");

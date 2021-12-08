@@ -14,11 +14,13 @@ public class QuestionService {
   private final QuestionDao dao;
   private final IOService ioService;
   private final LangConfig config;
+  private final MessageService messageService;
 
-  private QuestionService(LangConfig config, QuestionDao dao, IOService ioService) {
+  private QuestionService(LangConfig config, QuestionDao dao, IOService ioService, MessageService messageService) {
     this.config = config;
     this.ioService = ioService;
     this.dao = dao;
+    this.messageService = messageService;
   }
 
   public void testStudent() throws QuestionReadingException {
@@ -46,7 +48,7 @@ public class QuestionService {
 
       ioService.out("\n" + question);
       ioService.out(options);
-      ioService.out(config.getLocalMessage("strings.reply.to.input"));
+      ioService.out(messageService.getLocalMessage("strings.reply.to.input"));
 
       int inAnswer = ioService.readInt();
 
@@ -100,9 +102,9 @@ public class QuestionService {
   private void printResultTest (int cntTestRightAnswer, String resultTest) {
 
     if (cntTestRightAnswer >= config.getCntAnswerToPassTest()) {
-      ioService.out(config.getLocalMessage("strings.reply.pass.test") + resultTest);
+      ioService.out(messageService.getLocalMessage("strings.reply.pass.test") + resultTest);
     } else {
-      ioService.out(config.getLocalMessage("strings.reply.fail.test") + resultTest);
+      ioService.out(messageService.getLocalMessage("strings.reply.fail.test") + resultTest);
     }
   }
 

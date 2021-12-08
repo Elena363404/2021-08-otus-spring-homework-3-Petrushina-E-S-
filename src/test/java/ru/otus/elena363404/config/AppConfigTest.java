@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.elena363404.exception.QuestionReadingException;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +19,7 @@ class AppConfigTest {
 
   @Test
   void getQuizPath() {
-    HashMap <Integer, String> allQuizPath = config.getAllQuizPath();
+    Map<Integer, String> allQuizPath = config.getAllQuizPath();
     assertEquals(allQuizPath.get(2),"fileQuizRu.csv");
     assertEquals(allQuizPath.get(1),"fileQuizEn.csv");
   }

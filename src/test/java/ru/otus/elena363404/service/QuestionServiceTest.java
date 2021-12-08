@@ -34,6 +34,9 @@ class QuestionServiceTest {
   @MockBean
   private LangConfig config;
 
+  @MockBean
+  private MessageService messageService;
+
   @Test
   @DisplayName("ученик провалил тест 1/3")
   void testStudentFailTest() throws QuestionReadingException {
@@ -46,8 +49,8 @@ class QuestionServiceTest {
     when(ioService.readString()).thenReturn("1");
     when(ioService.readInt()).thenReturn(3);
     when(dao.getAllQuestions()).thenReturn(getQuestionList());
-    when(config.getLocalMessage("strings.reply.pass.test")).thenReturn("Поздравляем! Вы успешно прошли тестирование. ");
-    when(config.getLocalMessage("strings.reply.fail.test")).thenReturn("Вы не сдали тест! ");
+    when(messageService.getLocalMessage("strings.reply.pass.test")).thenReturn("Поздравляем! Вы успешно прошли тестирование. ");
+    when(messageService.getLocalMessage("strings.reply.fail.test")).thenReturn("Вы не сдали тест! ");
     questionService.testStudent();
     verify(ioService, times(1)).out("Choose language: \n" +
       "1.English\n" +
@@ -77,8 +80,8 @@ class QuestionServiceTest {
     when(ioService.readString()).thenReturn("1");
     when(ioService.readInt()).thenReturn(1).thenReturn(2).thenReturn(3);
     when(dao.getAllQuestions()).thenReturn(getQuestionList());
-    when(config.getLocalMessage("strings.reply.pass.test")).thenReturn("Поздравляем! Вы успешно прошли тестирование. ");
-    when(config.getLocalMessage("strings.reply.fail.test")).thenReturn("Вы не сдали тест! ");
+    when(messageService.getLocalMessage("strings.reply.pass.test")).thenReturn("Поздравляем! Вы успешно прошли тестирование. ");
+    when(messageService.getLocalMessage("strings.reply.fail.test")).thenReturn("Вы не сдали тест! ");
     questionService.testStudent();
     verify(ioService, times(1)).out("Choose language: \n" +
       "1.English\n" +

@@ -4,23 +4,23 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Map;
 
 @ConfigurationProperties(prefix = "features")
 @Component
 @Primary
 public class AppConfig {
 
-  private HashMap<Integer, String> allQuizPath;
+  private Map<Integer, String> allQuizPath;
   private int cntAnswerToPassTest;
   private int cntQuestion;
 
 
-  public HashMap<Integer, String> getAllQuizPath() {
+  public Map<Integer, String> getAllQuizPath() {
     return allQuizPath;
   }
 
-  public void setAllQuizPath(HashMap<Integer, String> quizPath) {
+  public void setAllQuizPath(Map<Integer, String> quizPath) {
     this.allQuizPath = quizPath;
   }
 
