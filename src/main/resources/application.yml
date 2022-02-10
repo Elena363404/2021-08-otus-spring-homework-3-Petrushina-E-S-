@@ -1,0 +1,21 @@
+features:
+  all-quiz-path:
+    1: fileQuizEn.csv
+    2: fileQuizRu.csv
+  cnt-answer-to-pass-test: 4
+  cnt-question: 5
+  cnt-available-lang: 2
+  available-lang:
+    1: English
+    2: Russian
+  all-locale:
+    1: en-EN
+    2: ru-RU
+spring:
+  messages:
+    basename: i18n/messages
+  spring:
+    output:
+      ansi:
+        enabled: ALWAYS
+

@@ -1,0 +1,6 @@
+Num,Question,Options,Answers
+1,Что из этого не имеет структуру на основе индекса?,List/Set/Map,3
+2,java.util.Collections это:,Class/Interface/Object/Ни один из вышеперечисленных,2
+3,Такие методы#COMMA как reverse и shuffle#COMMA предлагаются в:,Object/Collection/Collections/Apache Commons Collections,2
+4,Что из этого допускает дублирование элементов?,Set/List/All/Ни один из вышеперечисленных,2
+5,Что позволяет хранить null ключ и null значения?,Hashtable/HashMap/Ни один из вышеперечисленных,3
